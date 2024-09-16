@@ -11,18 +11,24 @@ function Login() {
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm();
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const login = async (data) => {
         setError("");
+        setLoading(true);
         try {
             const session = await authService.login(data); // Log in with Appwrite
             if (session) {
                 const userData = await authService.getCurrentUser(); // Get current user data
-                if (userData) dispatch(authLogin({ userdata: userData })); // Dispatch login action
-                navigate("/"); // Redirect to home page
+                if (userData) {
+                    dispatch(authLogin({ userdata: userData })); // Dispatch login action
+                    navigate("/all-posts"); // Navigate to the All Posts page
+                }
             }
         } catch (error) {
             setError(error.message || "Login failed, please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -54,10 +60,11 @@ function Login() {
                             placeholder="Enter your email"
                             type="email"
                             {...register("email", {
-                                required: true,
+                                required: "Email is required",
                                 validate: {
-                                    matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 
-                                    "Email address must be a valid address",
+                                    matchPattern: (value) =>
+                                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                                        "Email address must be a valid address",
                                 }
                             })}
                         />
@@ -66,10 +73,12 @@ function Login() {
                             type="password"
                             placeholder="Enter your password"
                             {...register("password", {
-                                required: true,
+                                required: "Password is required",
                             })}
                         />
-                        <Button type="submit" className="w-full bg-[#B3DEE7]">Sign in</Button>
+                        <Button type="submit" className="w-full bg-[#B3DEE7]">
+                            {loading ? 'Signing in...' : 'Sign in'}
+                        </Button>
                     </div>
                 </form>
             </div>
