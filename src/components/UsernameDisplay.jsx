@@ -11,7 +11,7 @@ const UsernameDisplay = () => {
                 if (user) {
                     setUsername(user.name);  // Assuming 'name' is the username field
                 } else {
-                    setUsername("No username found");
+                    setUsername("Please Sign In");
                 }
             } catch (error) {
                 console.error("Error fetching user:", error);
