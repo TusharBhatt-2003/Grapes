@@ -1,0 +1,28 @@
+/* Apply a smooth transition for scaling and shadow increase on hover */
+.post-card {
+    transition: filter 0.9s ease, transform 0.9s ease, box-shadow 0.9s ease;
+}
+
+.post-card:hover {
+    transform: scale(1.05); /* Slightly enlarges the hovered post card */
+    shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Webkit for Safari */
+    -moz-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Firefox */
+}
+
+.blur-background {
+    filter: blur(10px); /* Apply the blur effect */
+    transition: filter 0.9s ease-in-out;
+}
+
+.list {
+    columns: 200px;
+    overflow: hidden; /* Changed from 'none' to 'hidden' */
+}
+
+/* Ensure box-shadow transitions and effects work consistently across browsers */
+.post-card, .post-card:hover {
+    -webkit-transition: all 0.9s ease-in-out; /* Webkit for Safari */
+    -moz-transition: all 0.9s ease-in-out; /* Firefox */
+    transition: all 0.9s ease-in-out; /* Standard */
+}
