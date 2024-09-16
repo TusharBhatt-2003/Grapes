@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import appwriteService from "../appwrite/conf";
-import { Container, PostCard } from '../components';
+import { Container, PostCard, Signup } from '../components';
 import AuthService from "../appwrite/auth";
 import './AllPages.css';
 
@@ -58,16 +58,8 @@ function Home() {
         return (
             <div className="w-full py-8 mt-4 text-center">
                 <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
-                            <h1 className="text-2xl font-bold hover:text-gray-500">
-                                Please sign in or create an account to view your posts.
-                            </h1>
-                            <p className="text-lg mt-4">
-                                <a href="/login" className="text-blue-500 hover:text-blue-700 hover:underline">Sign In</a> or 
-                                <a href="/signup" className="text-blue-500 hover:text-blue-700 hover:underline"> Create an Account</a>
-                            </p>
-                        </div>
+                    <div className="flex justify-center flex-wrap">
+                      <Signup />
                     </div>
                 </Container>
             </div>
@@ -81,7 +73,7 @@ function Home() {
                 <Container>
                     <div className="flex flex-wrap">
                         <div className="p-2 w-full">
-                            <h1 className="text-2xl font-bold hover:text-gray-500">
+                            <h1 className="text-2xl font-bold hover:text-gray-500 ">
                                 No posts available.
                             </h1>
                         </div>
