@@ -30,7 +30,13 @@ const UsernameDisplay = () => {
             {loading ? (
                 <p>Loading...</p>
             ) : (
-                username && <div><h2>Username:</h2> <p>{username}</p></div> // Only show username if user is logged in
+                username && 
+                <div className="flex gap-1">
+                <h2 className="text-gray-500">
+                Username:</h2> 
+                <p className="text-[#1A3470]">
+                {username}</p>
+                </div> // Only show username if user is logged in
             )}
         </div>
     );
