@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/conf";
 import { Button, Container } from "../components";
+import DeletePopup from "../components/DeletePopup"; // Import DeletePopup
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 
@@ -12,13 +13,9 @@ export default function Post() {
 
     const userData = useSelector((state) => state.auth.userData);
 
-    // Add logs to debug userData and post
-    console.log("User Data:", userData);
-    console.log("Post Data:", post);
+    const [isPopupOpen, setIsPopupOpen] = useState(false); // State to control DeletePopup visibility
 
     const isAuthor = post && userData && post.userId === userData.$id;
-
-    console.log("Is Author:", isAuthor);  // This should output true if user is the author
 
     useEffect(() => {
         if (slug) {
@@ -39,41 +36,51 @@ export default function Post() {
     };
 
     return post ? (
-       <div className="flex justify-center">
-         <div className="py-[5rem] w-[50rem]">
-            <Container>
-                <div className="w-full flex justify-center mb-4 relative  rounded-xl p-2">
-                    {/* Conditionally render the image only if post.featuredImage exists */}
-                    {post.featuredImage && (
-                        <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
-                            alt={post.title}
-                            className="rounded-xl w-[50%]"
-                        />
-                    )}
+        <div className="flex justify-center">
+            <div
+                className={`pb-[5rem] w-[50rem] ${isPopupOpen ? 'blur-md' : ''}`} // Apply blur when popup is open
+            >
+                <Container>
+                    <div className="w-full flex justify-center mb-4 relative rounded-xl p-2">
+                        {post.featuredImage && (
+                            <img
+                                src={appwriteService.getFilePreview(post.featuredImage)}
+                                alt={post.title}
+                                className="rounded-xl w-[50%]"
+                            />
+                        )}
 
-                    {/* Show Edit and Delete buttons only if the user is the author */}
-                    {isAuthor && (
-                        <div className="absolute right-6 top-6 grid gap-1 w-fit">
-                            <Link to={`/edit-post/${post.$id}`}>
-                                <Button bgColor="bg-[#A7D996]" className="w-full">
-                                    Edit
+                        {isAuthor && (
+                            <div className="absolute right-6 top-6 grid gap-1 w-fit">
+                                <Link to={`/edit-post/${post.$id}`}>
+                                    <Button bgColor="bg-[#A7D996]" className="w-full">
+                                        Edit
+                                    </Button>
+                                </Link>
+                                <Button
+                                    bgColor="bg-[#C95147]"
+                                    onClick={() => setIsPopupOpen(true)} // Open the popup
+                                >
+                                    Delete
                                 </Button>
-                            </Link>
-                            <Button bgColor="bg-[#C95147]" onClick={deletePost}>
-                                Delete
-                            </Button>
-                        </div>
-                    )}
-                </div>
-                <div className="text-center w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
-                </div>
-                <div className="bg-white m-3 leading-9 p-[1rem] border-2 rounded-3xl border-red-800">
-                    {parse(post.content)}
-                </div>
-            </Container>
+                            </div>
+                        )}
+                    </div>
+                    <div className="text-center w-full mb-6">
+                        <h1 className="text-2xl font-bold">{post.title}</h1>
+                    </div>
+                    <div className="bg-white m-3 leading-9 p-[1rem] border-2 rounded-3xl border-red-800">
+                        {parse(post.content)}
+                    </div>
+                </Container>
+            </div>
+
+            {/* Render the DeletePopup */}
+            <DeletePopup
+                isOpen={isPopupOpen}
+                onClose={() => setIsPopupOpen(false)} // Close popup without deleting
+                onConfirm={deletePost} // Trigger the post deletion
+            />
         </div>
-       </div>
     ) : null;
 }
