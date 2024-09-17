@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, PostForm } from '../components';
 import appwriteService from '../appwrite/conf'; // Adjust the import path as needed
 

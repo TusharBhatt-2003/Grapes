@@ -26,3 +26,9 @@
     -moz-transition: all 0.9s ease-in-out; /* Firefox */
     transition: all 0.9s ease-in-out; /* Standard */
 }
+
+
+/* Add this to your global CSS file */
+.blur-md {
+    filter: blur(10px); /* You can adjust the blur level here */
+}

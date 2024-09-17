@@ -7,7 +7,7 @@ import store from './store/store.js'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import { AuthLayout, Login,} from './components/index.js'
-import AddPost from "./pages/AddPost";
+import AddPost from "./pages/Addpost";
 import Signup from './pages/Signup'
 import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
@@ -18,6 +18,15 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+        {
+            path: "/all-posts",
+            element: (
+                <AuthLayout authentication>
+                    {" "}
+                    <AllPost />
+                </AuthLayout>
+            ),
+        },
         {
             path: "/",
             element: <Home />,
@@ -38,15 +47,7 @@ const router = createBrowserRouter([
                 </AuthLayout>
             ),
         },
-        {
-            path: "/all-posts",
-            element: (
-                <AuthLayout authentication>
-                    {" "}
-                    <AllPost />
-                </AuthLayout>
-            ),
-        },
+     
         {
             path: "/add-post",
             element: (

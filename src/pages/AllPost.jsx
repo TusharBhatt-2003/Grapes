@@ -36,7 +36,7 @@ function AllPosts() {
     };
 
     return (
-        <div className='w-full h-max py-8 -z-10'>
+        <div className='w-full h-max py-1 m-0 -z-10'>
             <Container>
                 <div className='list m-4'>
                     {posts.map((post) => (

@@ -1,5 +1,6 @@
-import{ useEffect, useState } from "react";
-import AuthService from "../appwrite/auth"
+import { useEffect, useState } from "react";
+import AuthService from "../appwrite/auth";
+
 const UsernameDisplay = () => {
     const [username, setUsername] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -9,13 +10,15 @@ const UsernameDisplay = () => {
             try {
                 const user = await AuthService.getCurrentUser();
                 if (user) {
-                    setUsername(user.name);  // Assuming 'name' is the username field
+                    // Split the name by spaces and get only the first word
+                    const firstName = user.name.split(' ')[0];
+                    setUsername(firstName);
                 } else {
-                    setUsername("No username found");
+                    setUsername(null); // No username if user is not logged in
                 }
             } catch (error) {
                 console.error("Error fetching user:", error);
-                setUsername("Error fetching username");
+                setUsername(null); // In case of error, treat as no user
             } finally {
                 setLoading(false);
             }
@@ -26,8 +29,15 @@ const UsernameDisplay = () => {
 
     return (
         <div>
-            <h2>Username:</h2>
-            {loading ? <p>Loading...</p> : <p>{username}</p>}
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                username && 
+                <div className="flex">
+                    <h2 className="text-gray-500">:</h2> 
+                    <p className="text-[#1A3470]">{username}</p>
+                </div> // Only show username if user is logged in
+            )}
         </div>
     );
 };
