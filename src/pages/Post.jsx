@@ -69,7 +69,7 @@ export default function Post() {
                 <div className="text-center w-full mb-6">
                     <h1 className="text-2xl font-bold">{post.title}</h1>
                 </div>
-                <div className="bg-white m-3 p-[1rem] border-2 rounded-3xl border-red-800 browser-css">
+                <div className="bg-white m-3 leading-9 p-[1rem] border-2 rounded-3xl border-red-800">
                     {parse(post.content)}
                 </div>
             </Container>
