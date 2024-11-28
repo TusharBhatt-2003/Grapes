@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { Container, PostForm } from "../components";
 import appwriteService from "../appwrite/conf"; // Adjust the import path as needed
+=======
+import { useState, useEffect } from 'react';
+import { Container, PostForm } from '../components';
+import appwriteService from '../appwrite/conf'; // Adjust the import path as needed
+>>>>>>> 30b7709d2c6805388f97e1f995c29d9cd4117428
 
 function Addpost() {
   const [somePostObject, setSomePostObject] = useState(null); // Initialize as null for creating a new post

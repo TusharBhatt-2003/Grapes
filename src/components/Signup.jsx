@@ -12,6 +12,7 @@ function Signup() {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
 
+<<<<<<< HEAD
   const create = async (data) => {
     setError("");
     try {
@@ -23,6 +24,20 @@ function Signup() {
       }
     } catch (error) {
       setError(error.message);
+=======
+    const create = async(data) => {
+        setError("")
+        try {
+            const userData = await authService.createAccount(data)
+            if (userData) {
+                const userData = await authService.getCurrentUser()
+                if(userData) dispatch(login(userData));
+                navigate("/all-posts")
+            }
+        } catch (error) {
+            setError(error.message)
+        }
+>>>>>>> 30b7709d2c6805388f97e1f995c29d9cd4117428
     }
   };
 
@@ -86,4 +101,8 @@ function Signup() {
   );
 }
 
+<<<<<<< HEAD
 export default Signup;
+=======
+export default Signup
+>>>>>>> 30b7709d2c6805388f97e1f995c29d9cd4117428

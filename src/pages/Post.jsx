@@ -13,10 +13,15 @@ export default function Post() {
 
   const userData = useSelector((state) => state.auth.userData);
 
+<<<<<<< HEAD
   const [isPopupOpen, setIsPopupOpen] = useState(false); // State to control DeletePopup visibility
+=======
+    const [isPopupOpen, setIsPopupOpen] = useState(false); // State to control DeletePopup visibility
+>>>>>>> 30b7709d2c6805388f97e1f995c29d9cd4117428
 
   const isAuthor = post && userData && post.userId === userData.$id;
 
+<<<<<<< HEAD
   useEffect(() => {
     if (slug) {
       appwriteService.getPost(slug).then((post) => {
@@ -34,6 +39,16 @@ export default function Post() {
       }
     });
   };
+=======
+    useEffect(() => {
+        if (slug) {
+            appwriteService.getPost(slug).then((post) => {
+                if (post) setPost(post);
+                else navigate("/");
+            });
+        } else navigate("/");
+    }, [slug, navigate]);
+>>>>>>> 30b7709d2c6805388f97e1f995c29d9cd4117428
 
   return post ? (
     <div className="flex justify-center">
@@ -50,6 +65,7 @@ export default function Post() {
               />
             )}
 
+<<<<<<< HEAD
             {isAuthor && (
               <div className="absolute right-6 top-6 grid gap-1 w-fit">
                 <Link to={`/edit-post/${post.$id}`}>
@@ -83,4 +99,54 @@ export default function Post() {
       />
     </div>
   ) : null;
+=======
+    return post ? (
+        <div className="flex justify-center">
+            <div
+                className={`pb-[5rem] w-[50rem] ${isPopupOpen ? 'blur-md' : ''}`} // Apply blur when popup is open
+            >
+                <Container>
+                    <div className="w-full flex justify-center mb-4 relative rounded-xl p-2">
+                        {post.featuredImage && (
+                            <img
+                                src={appwriteService.getFilePreview(post.featuredImage)}
+                                alt={post.title}
+                                className="rounded-xl w-[50%]"
+                            />
+                        )}
+
+                        {isAuthor && (
+                            <div className="absolute right-6 top-6 grid gap-1 w-fit">
+                                <Link to={`/edit-post/${post.$id}`}>
+                                    <Button bgColor="bg-[#A7D996]" className="w-full">
+                                        Edit
+                                    </Button>
+                                </Link>
+                                <Button
+                                    bgColor="bg-[#C95147]"
+                                    onClick={() => setIsPopupOpen(true)} // Open the popup
+                                >
+                                    Delete
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    <div className="text-center w-full mb-6">
+                        <h1 className="text-2xl font-bold">{post.title}</h1>
+                    </div>
+                    <div className="bg-white m-3 leading-9 p-[1rem] border-2 rounded-3xl border-red-800">
+                        {parse(post.content)}
+                    </div>
+                </Container>
+            </div>
+
+            {/* Render the DeletePopup */}
+            <DeletePopup
+                isOpen={isPopupOpen}
+                onClose={() => setIsPopupOpen(false)} // Close popup without deleting
+                onConfirm={deletePost} // Trigger the post deletion
+            />
+        </div>
+    ) : null;
+>>>>>>> 30b7709d2c6805388f97e1f995c29d9cd4117428
 }

@@ -23,6 +23,7 @@ function AllPosts() {
     fetchPosts();
   }, []);
 
+<<<<<<< HEAD
   const handleMouseEnter = (postId) => {
     const timeout = setTimeout(() => {
       setHoveredId(postId); // Set the post to be highlighted after 4 seconds
@@ -54,6 +55,29 @@ function AllPosts() {
               />
             </div>
           ))}
+=======
+    return (
+        <div className='w-full h-max py-1 m-0 -z-10'>
+            <Container>
+                <div className='list m-4'>
+                    {posts.map((post) => (
+                        <div 
+                            key={post.$id} 
+                            className={`post-card m-4 rounded-xl shadow-xl overflow-hidden ${hoveredId && hoveredId !== post.$id ? 'blur-background' : ''}`}
+                            onMouseEnter={() => handleMouseEnter(post.$id)}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <PostCard
+                                $id={post.$id}
+                                title={post.title}
+                                featuredImage={post.featuredImage}
+                                name={post.name} // Use userName directly from post
+                            />
+                        </div>
+                    ))}
+                </div>
+            </Container>
+>>>>>>> 30b7709d2c6805388f97e1f995c29d9cd4117428
         </div>
       </Container>
     </div>
