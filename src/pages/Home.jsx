@@ -1,108 +1,111 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import appwriteService from "../appwrite/conf";
-import { Container, PostCard, Signup } from '../components';
+import { Container, PostCard, Signup } from "../components";
 import AuthService from "../appwrite/auth";
-import './AllPages.css';
+import "./AllPages.css";
 
 function Home() {
-    const [posts, setPosts] = useState([]);
-    const [currentUserId, setCurrentUserId] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // State to manage loading
+  const [posts, setPosts] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // State to manage loading
 
-    useEffect(() => {
-        const fetchPostsAndUser = async () => {
-            setIsLoading(true); // Start loading
-            try {
-                // Get current user
-                const user = await AuthService.getCurrentUser();
-                if (user) {
-                    setCurrentUserId(user.$id);
+  useEffect(() => {
+    const fetchPostsAndUser = async () => {
+      setIsLoading(true); // Start loading
+      try {
+        // Get current user
+        const user = await AuthService.getCurrentUser();
+        if (user) {
+          setCurrentUserId(user.$id);
 
-                    // Get posts
-                    const postResponse = await appwriteService.getPosts();
-                    if (postResponse) {
-                        // Filter posts based on current user's ID
-                        const userPosts = postResponse.documents.filter(post => post.userId === user.$id);
-                        setPosts(userPosts);
-                    }
-                } 
-            } catch (error) {
-                console.error('Error fetching posts or user:', error);
-            } finally {
-                setIsLoading(false); // Stop loading after fetching data
-            }
-        };
+          // Get posts
+          const postResponse = await appwriteService.getPosts();
+          if (postResponse) {
+            // Filter posts based on current user's ID
+            const userPosts = postResponse.documents.filter(
+              (post) => post.userId === user.$id,
+            );
+            setPosts(userPosts);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching posts or user:", error);
+      } finally {
+        setIsLoading(false); // Stop loading after fetching data
+      }
+    };
 
-        fetchPostsAndUser();
-    }, []);
+    fetchPostsAndUser();
+  }, []);
 
-    // Show loading message while fetching posts
-    if (isLoading) {
-        return (
-            <div className="w-full py-8 mt-4 text-center">
-                <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
-                            <h1 className="text-2xl font-bold hover:text-gray-500">
-                               Loading... Your posts...
-                            </h1>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-        );
-    }
-
-    // If user is not logged in, show login/signup prompt
-    if (!currentUserId) {
-        return (
-            <div className="w-full py-8 mt-4 text-center">
-                <Container>
-                    <div className="flex justify-center flex-wrap">
-                      <Signup />
-                    </div>
-                </Container>
-            </div>
-        );
-    }
-
-    // If there are no posts
-    if (posts.length === 0) {
-        return (
-            <div className="w-full py-8 mt-4 text-center">
-                <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
-                            <h1 className="text-2xl font-bold hover:text-gray-500 ">
-                                No posts available.
-                            </h1>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-        );
-    }
-
-    // If the user is logged in and posts are available
+  // Show loading message while fetching posts
+  if (isLoading) {
     return (
-        <div className='w-full h-max py-1'>
-            <Container>
-                <div className='flex flex-col justify-center text-center m-3'>
-                    <h1 className='font-bold text-2xl'>Your Posts</h1>
-                    <h2 className='text-xl text-gray-500'>
-                        Total Posts: {posts.length}
-                    </h2>
-                </div>
-                <div className='list p-2'>
-                    {posts.map((post) => (
-                        <div key={post.$id} className='post-card m-2 overflow-hidden rounded-xl shadow-lg'>
-                            <PostCard {...post} />
-                        </div>
-                    ))}
-                </div>
-            </Container>
-        </div>
+      <div className="w-full py-8 mt-4 text-center">
+        <Container>
+          <div className="flex flex-wrap">
+            <div className="p-2 w-full">
+              <h1 className="text-2xl font-bold hover:text-gray-500">
+                Loading... Your posts...
+              </h1>
+            </div>
+          </div>
+        </Container>
+      </div>
     );
+  }
+
+  // If user is not logged in, show login/signup prompt
+  if (!currentUserId) {
+    return (
+      <div className="w-full py-8 mt-4 text-center">
+        <Container>
+          <div className="flex justify-center flex-wrap">
+            <Signup />
+          </div>
+        </Container>
+      </div>
+    );
+  }
+
+  // If there are no posts
+  if (posts.length === 0) {
+    return (
+      <div className="w-full py-8 mt-4 text-center">
+        <Container>
+          <div className="flex flex-wrap">
+            <div className="p-2 w-full">
+              <h1 className="text-2xl font-bold hover:text-gray-500 ">
+                No posts available.
+              </h1>
+            </div>
+          </div>
+        </Container>
+      </div>
+    );
+  }
+
+  // If the user is logged in and posts are available
+  return (
+    <div className="w-full h-max py-1">
+      <Container>
+        <div className="flex flex-col justify-center text-center m-3">
+          <h1 className="font-bold text-2xl">Your Posts</h1>
+          <h2 className="text-xl text-gray-500">Total Posts: {posts.length}</h2>
+        </div>
+        <div className="list p-2">
+          {posts.map((post) => (
+            <div
+              key={post.$id}
+              className="post-card m-2 overflow-hidden rounded-xl shadow-lg"
+            >
+              <PostCard {...post} />
+            </div>
+          ))}
+        </div>
+      </Container>
+    </div>
+  );
 }
 
 export default Home;
